@@ -1,25 +1,28 @@
-NAME	:= server
-NAME2	:= client
+SERVER	:= server
+CLIENT	:= client
+
+CC	:= cc
 CFLAGS	:= -Wextra -Wall -Werror -g3
+
 LIBFT	:= ./lib/libft
 PRINTF	:= ./lib/printf
-SRCS_PATH	:= ./src/
+
+SRCS_CLIENT	:= src/client.c
+CLIENT_OBJS	:= $(SRCS_CLIENT:src/%.c=obj/%.o)
+
+SRCS_SERVER	:= src/server.c
+SERVER_OBJS	:= $(SRCS_SERVER:src/%.c=obj/%.o)
 .SILENT:
 
-GREEN = \033[32m
-YELLOW = \033[33m
-RESET = \033[0m
+GREEN := \033[32m
+BLUE := \033[34m
+YELLOW := \033[33m
+RESET := \033[0m
 
-COUNT = 0
 HEADERS	:= -I ./include -I $(LIBFT)/include -I $(PRINTF)/include
 LIBS	:= ${LIBFT}/libft.a $(PRINTF)/libftprintf.a -ldl -lglfw -pthread -lm
-SRCS	:= $(addprefix $(SRCS_PATH),\
-			client.c \
-			server\)
 
-OBJS	:= ${SRCS:%.c=%.o}
-
-all: libft printf $(NAME)
+all: libft printf $(CLIENT) $(SERVER)
 
 libft:
 	$(MAKE) -C ${LIBFT} all
@@ -27,21 +30,29 @@ libft:
 printf:
 	$(MAKE) -C ${PRINTF} all
 
-%.o: %.c
-	$(eval COUNT=$(shell expr $(COUNT) + 1))
-	$(CC) $(HEADERS) $(CFLAGS) -o $@ -c $<
-	printf "Compiling %d%%\r" $$(echo $$(($(COUNT) * 100 / $(words $(SRCS)))))
 
-$(NAME): $(OBJS)
-	printf "$(YELLOW)Compiling server...$(RESET)\n"
-	$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+SRCS_SERVER	:= $(addprefix $(SRCS_PATH_SERVER),\
+			server.c \
+			)
+$(CLIENT): $(CLIENT_OBJS)
+	printf "$(YELLOW) Compiling client...$(RESET)\n"
+	$(CC) $(CLIENT_OBJS) $(LIBS) $(HEADERS) -o $(CLIENT)
 	printf "$(GREEN)Done!\n $(RESET)"
 
+$(SERVER): $(SERVER_OBJS)
+	printf "$(BLUE)Compiling server...$(RESET)\n"
+	$(CC) $(SERVER_OBJS) $(LIBS) $(HEADERS) -o $(SERVER)
+	printf "$(GREEN)Done!\n $(RESET)"
+
+obj/%.o: src/%.c
+	mkdir -p obj
+	$(CC) $(HEADERS) $(CFLAGS) -o $@ -c $<
+
 clean:
-	rm -rf $(OBJS)
+	rm -rf obj
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf $(CLIENT) $(SERVER)
 
 re: fclean all
 
