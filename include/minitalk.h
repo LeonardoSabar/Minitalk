@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:57:21 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/14 16:25:57 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:35:23 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,5 @@
 # include <stdio.h>
 # include "../lib/libft/libft.h"
 # include "../lib/printf/includes/ft_printf.h"
-
-# define SIGUSR1 0
-# define SIGUSR2 1
-
-
 
 #endif
