@@ -6,19 +6,24 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/19 14:35:50 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:46:53 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+#include <signal.h>
 
-void	handler(int signal)
+struct sigaction	sa_newsignal;
+
+static void	handler(int siginfo, siginfo_t *info, void *context)
 {
 	static char	c;
 	static int	bit;
 
-	if (signal == SIGUSR1)
-		c |= (1 << bit);
+	(void)context;
+	(void)info;
+	if (siginfo == SIGUSR1)
+		c = c | (1 << bit);
 	bit++;
 	if (bit == 8)
 	{
@@ -28,13 +33,29 @@ void	handler(int signal)
 	}
 }
 
+static void	signal_config_server(void)
+{
+	struct sigaction	sa_newsignal;
+	sa_newsignal.sa_sigaction = &handler;
+	sa_newsignal.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1)
+	{
+		ft_putendl_fd("Error!", STDERR_FILENO);
+		exit(1);
+	}
+	if (sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
+	{
+		ft_putendl_fd("Error!", STDERR_FILENO);
+		exit(1);
+	}
+}
+
 int main(void)
 {
-	printf("Welcome to Minitalk!\n");
-	printf("The PID number is: %d\n", getpid());
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
+	ft_printf("Welcome to Minitalk!\n");
+	ft_printf("The PID number is: %d\n", getpid());
+
 	while (1)
-		pause();
+		signal_config_server();
 	return (0);
 }

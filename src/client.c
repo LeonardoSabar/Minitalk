@@ -6,27 +6,11 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/19 14:39:05 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:28:34 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
-
-void send_binary(char charac, int pid)
-{
-	int bit_idx;
-
-	bit_idx = 0;
-	while (bit_idx < 8)
-	{
-		if ((charac & (0b1 << bit_idx)) == 0)
-			kill(pid, SIGUSR2);
-		else
-			kill(pid, SIGUSR1);
-		bit_idx++;
-		usleep(300);
-	}
-}
 
 void	check_args(int argc, char **argv)
 {
@@ -57,23 +41,59 @@ void	check_args(int argc, char **argv)
 	}
 }
 
+void send_binary(char charac, pid_t pid)
+{
+	int bit_idx;
+
+	bit_idx = 0;
+		while (bit_idx < 8)
+		{
+			if ((charac & (0b1 << bit_idx)) == 0)
+				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
+			bit_idx++;
+			usleep(300);
+		}
+	}
+
+void	sig_handler(int sig)
+{
+	if (sig == SIGUSR2)
+		write (1, "Character received!\n", 22);
+}
+
+static void	signal_config_client(void)
+{
+	struct sigaction	sa_newsignal;
+
+	sa_newsignal.sa_handler = &sig_handler;
+	sa_newsignal.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1)
+	{
+		ft_putendl_fd("Error!", STDERR_FILENO);
+		exit(1);
+	}
+	if (sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
+	{
+		ft_putendl_fd("Error!", STDERR_FILENO);
+		exit(1);
+	}
+}
+
+
 int main(int argc, char **argv)
 {
-	char	*str;
-	int		pid;
+	pid_t	pid;
 	int		idx;
 
 	idx = 0;
-	str = argv[2];
-
-	printf("%s %s\n", argv[1], argv[2]);
 	check_args(argc, argv);
 	pid = ft_atoi(argv[1]);
-
-	while (str[idx])
+	while (argv[2][idx])
 	{
-		send_binary(str[idx], pid);
-		idx++;
+		send_binary(argv[2][idx++], pid);
+		signal_config_client();
 	}
-	return 0;
+	return (0);
 }
