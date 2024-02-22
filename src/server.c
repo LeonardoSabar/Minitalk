@@ -6,13 +6,13 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/22 14:41:39 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:55:24 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-struct sigaction	sa_newsignal;
+
 
 static void	handler(int siginfo, siginfo_t *info, void *context)
 {
@@ -37,12 +37,8 @@ static void	signal_config_server(void)
 	struct sigaction	sa_newsignal;
 	sa_newsignal.sa_sigaction = &handler;
 	sa_newsignal.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1)
-	{
-		ft_putendl_fd("Error!", STDERR_FILENO);
-		exit(1);
-	}
-	if (sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
+	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1
+		|| sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
 	{
 		ft_putendl_fd("Error!", STDERR_FILENO);
 		exit(1);

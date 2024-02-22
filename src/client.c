@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/22 14:35:31 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:24:00 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@ void	check_args(int argc, char **argv)
 		}
 		idx++;
 	}
-	if (ft_strlen(argv[2]) == 0)
-	{
-		ft_putendl_fd("A valid message is required.\n",
-		STDERR_FILENO);
-		exit(1);
-	}
 }
 
 void send_binary(char charac, pid_t pid)
@@ -53,7 +47,7 @@ void send_binary(char charac, pid_t pid)
 			else
 				kill(pid, SIGUSR1);
 			bit_idx++;
-			usleep(350);
+			usleep(300);
 		}
 	}
 
@@ -69,34 +63,24 @@ void	signal_config_client(void)
 
 	sa_newsignal.sa_handler = &sig_handler;
 	sa_newsignal.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1)
-	{
-		ft_putendl_fd("Error!", STDERR_FILENO);
-		exit(1);
-	}
-	if (sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
+	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1
+		|| sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
 	{
 		ft_putendl_fd("Error!", STDERR_FILENO);
 		exit(1);
 	}
 }
 
-
 int main(int argc, char **argv)
 {
 	pid_t	pid;
 	int		idx;
-	char	empty;
 
-	empty = '\0';
 	idx = 0;
 	check_args(argc, argv);
 	pid = ft_atoi(argv[1]);
+	signal_config_client();
 	while (argv[2][idx])
-	{
 		send_binary(argv[2][idx++], pid);
-		send_binary(empty, pid);
-		signal_config_client();
-	}
 	return (0);
 }
