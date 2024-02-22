@@ -6,12 +6,11 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/20 16:46:53 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:41:39 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
-#include <signal.h>
 
 struct sigaction	sa_newsignal;
 

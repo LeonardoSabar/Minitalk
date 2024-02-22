@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/20 17:28:34 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:35:31 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void send_binary(char charac, pid_t pid)
 			else
 				kill(pid, SIGUSR1);
 			bit_idx++;
-			usleep(300);
+			usleep(350);
 		}
 	}
 
@@ -63,7 +63,7 @@ void	sig_handler(int sig)
 		write (1, "Character received!\n", 22);
 }
 
-static void	signal_config_client(void)
+void	signal_config_client(void)
 {
 	struct sigaction	sa_newsignal;
 
@@ -86,13 +86,16 @@ int main(int argc, char **argv)
 {
 	pid_t	pid;
 	int		idx;
+	char	empty;
 
+	empty = '\0';
 	idx = 0;
 	check_args(argc, argv);
 	pid = ft_atoi(argv[1]);
 	while (argv[2][idx])
 	{
 		send_binary(argv[2][idx++], pid);
+		send_binary(empty, pid);
 		signal_config_client();
 	}
 	return (0);
