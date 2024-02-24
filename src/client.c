@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/22 19:24:00 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/24 11:28:56 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_args(int argc, char **argv)
 	if (argc != 3)
 	{
 		ft_putendl_fd("Usage error.\nExpected:<client.c> <pid> <message>",
-		STDERR_FILENO);
+			STDERR_FILENO);
 		exit(1);
 	}
 	idx = 0;
@@ -28,28 +28,28 @@ void	check_args(int argc, char **argv)
 		if (!ft_isdigit(argv[1][idx]))
 		{
 			ft_putendl_fd("A valid PID is required.\n",
-			STDERR_FILENO);
+				STDERR_FILENO);
 			exit(1);
 		}
 		idx++;
 	}
 }
 
-void send_binary(char charac, pid_t pid)
+void	send_binary(char charac, pid_t pid)
 {
-	int bit_idx;
+	int	bit_idx;
 
 	bit_idx = 0;
-		while (bit_idx < 8)
-		{
-			if ((charac & (0b1 << bit_idx)) == 0)
-				kill(pid, SIGUSR2);
-			else
-				kill(pid, SIGUSR1);
-			bit_idx++;
-			usleep(300);
-		}
+	while (bit_idx < 8)
+	{
+		if ((charac & (0b1 << bit_idx)) == 0)
+			kill(pid, SIGUSR2);
+		else
+			kill(pid, SIGUSR1);
+		bit_idx++;
+		usleep(300);
 	}
+}
 
 void	sig_handler(int sig)
 {
@@ -71,7 +71,7 @@ void	signal_config_client(void)
 	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	pid_t	pid;
 	int		idx;
