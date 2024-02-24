@@ -70,7 +70,7 @@ obj_bonus/%.o: bonus/%.c
 	$(CC) $(HEADERS) $(CFLAGS) -o $@ -c $<
 
 clean:
-	rm -rf obj
+	rm -rf obj obj_bonus
 
 fclean: clean
 	rm -rf $(CLIENT) $(SERVER) $(BONUS_CLIENT) $(BONUS_SERVER)
