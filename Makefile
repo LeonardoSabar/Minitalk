@@ -1,6 +1,9 @@
 SERVER	:= server
 CLIENT	:= client
 
+BONUS_SERVER := server_bonus
+BONUS_CLIENT := client_bonus
+
 CC	:= cc
 CFLAGS	:= -Wextra -Wall -Werror -g3
 
@@ -12,6 +15,12 @@ CLIENT_OBJS	:= $(SRCS_CLIENT:src/%.c=obj/%.o)
 
 SRCS_SERVER	:= src/server.c
 SERVER_OBJS	:= $(SRCS_SERVER:src/%.c=obj/%.o)
+
+SRCS_CLIENT_BONUS := bonus/client_bonus.c
+CLIENT_BONUS_OBJS := $(SRCS_CLIENT_BONUS:bonus/%.c=obj_bonus/%.o)
+
+SRCS_SERVER_BONUS := bonus/server_bonus.c
+SERVER_BONUS_OBJS := $(SRCS_SERVER_BONUS:bonus/%.c=obj_bonus/%.o)
 .SILENT:
 
 GREEN := \033[32m
@@ -24,16 +33,14 @@ LIBS	:= ${LIBFT}/libft.a $(PRINTF)/libftprintf.a -ldl -lglfw -pthread -lm
 
 all: libft printf $(CLIENT) $(SERVER)
 
+bonus: libft printf $(BONUS_CLIENT) $(BONUS_SERVER)
+
 libft:
 	$(MAKE) -C ${LIBFT} all
 
 printf:
 	$(MAKE) -C ${PRINTF} all
 
-
-SRCS_SERVER	:= $(addprefix $(SRCS_PATH_SERVER),\
-			server.c \
-			)
 $(CLIENT): $(CLIENT_OBJS)
 	printf "$(YELLOW) Compiling client...$(RESET)\n"
 	$(CC) $(CLIENT_OBJS) $(LIBS) $(HEADERS) -o $(CLIENT)
@@ -44,15 +51,29 @@ $(SERVER): $(SERVER_OBJS)
 	$(CC) $(SERVER_OBJS) $(LIBS) $(HEADERS) -o $(SERVER)
 	printf "$(GREEN)Done!\n $(RESET)"
 
+$(BONUS_CLIENT): $(CLIENT_BONUS_OBJS)
+	printf "$(YELLOW) Compiling client bonus...$(RESET)\n"
+	$(CC) $(CLIENT_BONUS_OBJS) $(LIBS) $(HEADERS) -o $(BONUS_CLIENT)
+	printf "$(GREEN)Done!\n $(RESET)"
+
+$(BONUS_SERVER): $(SERVER_BONUS_OBJS)
+	printf "$(BLUE) Compiling server bonus...$(RESET)\n"
+	$(CC) $(SERVER_BONUS_OBJS) $(LIBS) $(HEADERS) -o $(BONUS_SERVER)
+	printf "$(GREEN)Done!\n $(RESET)"
+
 obj/%.o: src/%.c
 	mkdir -p obj
+	$(CC) $(HEADERS) $(CFLAGS) -o $@ -c $<
+
+obj_bonus/%.o: bonus/%.c
+	mkdir -p obj_bonus
 	$(CC) $(HEADERS) $(CFLAGS) -o $@ -c $<
 
 clean:
 	rm -rf obj
 
 fclean: clean
-	rm -rf $(CLIENT) $(SERVER)
+	rm -rf $(CLIENT) $(SERVER) $(BONUS_CLIENT) $(BONUS_SERVER)
 
 re: fclean all
 
