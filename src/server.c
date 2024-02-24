@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/24 17:06:33 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:12:20 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,28 @@
 
 void	welcome_display(void)
 {
-	ft_printf(" _____                                                           ");
-	ft_printf("                   _____\n");
-	ft_printf("( ___ )-----------------------------------------------------------", "");
-	ft_printf("-----------------( ___ )\n");
-	ft_printf(" |   |                                                           ", "");
-	ft_printf("                   |   |\n");
-	ft_printf(" |   | ooo        ooooo  o8o               o8o      .            ", "");
-	ft_printf(" oooo  oooo        |   |\n");
-	ft_printf(" |   | `88.       .888'  `*                `*     .o8            ", "");
-	ft_printf(" `888  `888        |   |\n");
-	ft_printf(" |   |  888b     d'888  oooo  ooo. .oo.   oooo  .o888oo  .oooo.  ", "");
-	ft_printf("  888   888  oooo  |   |\n");
-	ft_printf(" |   |  8  `888'   888   888   888   888   888    888    .oP'888 ", "");
-	ft_printf("  888   888888.    |   |\n");
-	ft_printf(" |   |  8    Y     888   888   888   888   888    888 . d8(  888 ", "");
-	ft_printf("  888   888 `88b.  |   |\n");
-	ft_printf(" |   | o8o        o888o o888o o888o o888o o888o   '888  `Y888''8o", "");
-	ft_printf(" o888o o888o o888o |   |\n");
-	ft_printf(" |___|                                                           ", "");
-	ft_printf("                   |___|\n");
-	ft_printf("(_____)-----------------------------------------------------------", "");
-	ft_printf("-----------------(_____)\n");
+	ft_printf(" _____                                         ");
+	ft_printf("                                     _____\n");
+	ft_printf("( ___ )-----------------------------------------", "");
+	ft_printf("-----------------------------------( ___ )\n");
+	ft_printf(" |   |                                         ", "");
+	ft_printf("                                     |   |\n");
+	ft_printf(" |   | ooo        ooooo  o8o               o8o ", "");
+	ft_printf("     .             oooo  oooo        |   |\n");
+	ft_printf(" |   | `88.       .888'  `*                `*  ", "");
+	ft_printf("   .o8             `888  `888        |   |\n");
+	ft_printf(" |   |  888b     d'888  oooo  ooo. .oo.   oooo ", "");
+	ft_printf(" .o888oo  .oooo.    888   888  oooo  |   |\n");
+	ft_printf(" |   |  8  `888'   888   888   888   888   888 ", "");
+	ft_printf("   888    .oP'888   888   888888.    |   |\n");
+	ft_printf(" |   |  8    Y     888   888   888   888   888 ", "");
+	ft_printf("   888 . d8(  888   888   888 `88b.  |   |\n");
+	ft_printf(" |   | o8o        o888o o888o o888o o888o o888o", "");
+	ft_printf("   '888  `Y888''8o o888o o888o o888o |   |\n");
+	ft_printf(" |___|                                         ", "");
+	ft_printf("                                     |___|\n");
+	ft_printf("(_____)-----------------------------------------", "");
+	ft_printf("-----------------------------------(_____)\n");
 	ft_printf("            ----- Welcome to Minitalk! ------ ");
 	ft_printf("The PID number is: %d ------\n\n", getpid());
 }
