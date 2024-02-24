@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/24 11:28:56 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/24 16:46:39 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,24 @@ void	send_binary(char charac, pid_t pid)
 		else
 			kill(pid, SIGUSR1);
 		bit_idx++;
-		usleep(300);
+		usleep(342);
 	}
 }
 
-void	sig_handler(int sig)
+void	client_handler(int sig)
 {
-	if (sig == SIGUSR2)
-		write (1, "Character received!\n", 22);
+	if (sig == SIGUSR1)
+	{
+		ft_putstr ("Character received!\n");
+	}
 }
 
 void	signal_config_client(void)
 {
 	struct sigaction	sa_newsignal;
 
-	sa_newsignal.sa_handler = &sig_handler;
-	sa_newsignal.sa_flags = SA_SIGINFO;
+	sa_newsignal.sa_flags = 0;
+	sa_newsignal.sa_handler = &client_handler;
 	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1
 		|| sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
 	{
