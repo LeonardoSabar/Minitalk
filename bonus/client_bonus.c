@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/26 15:32:21 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:59:56 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 int	g_signal_received;
 
+/**
+ * @brief Check if the arguments are valid
+ * @param argc Number of arguments
+ * @param argv Arguments
+ */
 void	check_args(int argc, char **argv)
 {
 	int	idx;
@@ -37,6 +42,15 @@ void	check_args(int argc, char **argv)
 	}
 }
 
+/**
+ * @brief Send a binary message to the server
+ * @brief charac Character to be sent
+ * @brief pid Server's PID
+ * @brief kill Send a signal to a process
+ * @brief SIGUSR1 User-defined signal 1
+ * @brief SIGUSR2 User-defined signal 2
+ * @return void
+*/
 void	send_binary(char charac, pid_t pid)
 {
 	int	bit_idx;
@@ -55,6 +69,13 @@ void	send_binary(char charac, pid_t pid)
 	}
 }
 
+/**
+ * @brief Handle the signals received by the client
+ * @brief sig Signal received
+ * @brief SIGUSR1 User-defined signal 1
+ * @brief SIGUSR2 User-defined signal 2
+ * @return void
+*/
 void	client_handler(int sig)
 {
 	if (sig == SIGUSR1)
@@ -63,6 +84,15 @@ void	client_handler(int sig)
 		g_signal_received = 1;
 }
 
+/**
+ * @brief Configure the signals for the client
+ * @brief sigaction Structure that specifies the action to be associated with a specific signal
+ * @brief sa_flags Special flags
+ * @brief sa_handler Signal handler
+ * @brief SIGUSR1 User-defined signal 1
+ * @brief SIGUSR2 User-defined signal 2
+ * @return void
+*/
 void	signal_config_client(void)
 {
 	struct sigaction	sa_newsignal;
@@ -77,6 +107,13 @@ void	signal_config_client(void)
 	}
 }
 
+/**
+ * @brief Main function
+ * @brief argc Number of arguments
+ * @brief argv Arguments
+ * @brief pid Server's PID
+ * @return 0
+*/
 int	main(int argc, char **argv)
 {
 	pid_t	pid;

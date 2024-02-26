@@ -6,12 +6,17 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/26 16:00:40 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:04:17 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
+/**
+ * @brief Display a welcome message
+ * @brief PID Get the process ID
+ * @return void
+*/
 void	welcome_display(void)
 {
 	ft_printf(" _____                                         ");
@@ -40,6 +45,14 @@ void	welcome_display(void)
 	ft_printf("The PID number is: %d ------\n\n", getpid());
 }
 
+/**
+ * @brief Handle the signals received
+ * @brief siginfo Signal information
+ * @brief info Signal information
+ * @brief context Signal context
+ * @brief convert SIGUSR1 and SIGUSR2 receveid to be printed
+ * @return void
+*/
 static void	server_handler(int siginfo, siginfo_t *info, void *context)
 {
 	static char	c;
@@ -60,6 +73,15 @@ static void	server_handler(int siginfo, siginfo_t *info, void *context)
 	}
 }
 
+/**
+ * @brief Configure the signals to be received by the server
+ * @brief sa_newsignal New signal action
+ * @brief sa_flags Special flags
+ * @brief server_handler Signal handler
+ * @brief SIGUSR1 User-defined signal 1
+ * @brief SIGUSR2 User-defined signal 2
+ * @return void
+*/
 static void	signal_config_server(void)
 {
 	struct sigaction	sa_newsignal;
@@ -74,6 +96,12 @@ static void	signal_config_server(void)
 	}
 }
 
+/**
+ * @brief Main function
+ * @brief welcome_display Display a welcome message
+ * @brief signal_config_server Configure the signals to be received by the server
+ * @return 0
+*/
 int	main(void)
 {
 	welcome_display();
