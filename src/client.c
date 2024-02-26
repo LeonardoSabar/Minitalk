@@ -6,11 +6,13 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/24 16:46:39 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:27:36 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+
+int	g_signal_received;
 
 void	check_args(int argc, char **argv)
 {
@@ -42,21 +44,24 @@ void	send_binary(char charac, pid_t pid)
 	bit_idx = 0;
 	while (bit_idx < 8)
 	{
+		g_signal_received = 0;
 		if ((charac & (0b1 << bit_idx)) == 0)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
 		bit_idx++;
-		usleep(342);
+		while (!g_signal_received)
+			;
 	}
 }
 
 void	client_handler(int sig)
 {
 	if (sig == SIGUSR1)
-	{
 		ft_putstr ("Character received!\n");
-	}
+	else if (sig == SIGUSR2)
+		g_signal_received = 1;
+
 }
 
 void	signal_config_client(void)
@@ -68,7 +73,7 @@ void	signal_config_client(void)
 	if (sigaction(SIGUSR1, &sa_newsignal, NULL) == -1
 		|| sigaction(SIGUSR2, &sa_newsignal, NULL) == -1)
 	{
-		ft_putendl_fd("Error!", STDERR_FILENO);
+		ft_putendl_fd("Error setting signal handlers!\n", STDERR_FILENO);
 		exit(1);
 	}
 }
@@ -82,6 +87,7 @@ int	main(int argc, char **argv)
 	check_args(argc, argv);
 	pid = ft_atoi(argv[1]);
 	signal_config_client();
+	ft_printf("💤\n");
 	while (argv[2][idx])
 		send_binary(argv[2][idx++], pid);
 	return (0);

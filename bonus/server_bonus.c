@@ -6,11 +6,11 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:52:53 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/24 17:16:38 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:55:56 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk_bonus.h"
+#include "../include/minitalk.h"
 
 void	welcome_display(void)
 {
@@ -50,6 +50,7 @@ static void	server_handler(int siginfo, siginfo_t *info, void *context)
 	if (siginfo == SIGUSR1)
 		c = c | (1 << bit);
 	bit++;
+	kill(info->si_pid, SIGUSR2);
 	if (bit == 8)
 	{
 		ft_printf("%c", c);
