@@ -6,7 +6,7 @@
 /*   By: leobarbo <leobarbo@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 14:33:25 by leobarbo          #+#    #+#             */
-/*   Updated: 2024/02/26 13:54:55 by leobarbo         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:32:21 by leobarbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	client_handler(int sig)
 		ft_putstr ("Character received!\n");
 	else if (sig == SIGUSR2)
 		g_signal_received = 1;
-
 }
 
 void	signal_config_client(void)
@@ -89,5 +88,6 @@ int	main(int argc, char **argv)
 	signal_config_client();
 	while (argv[2][idx])
 		send_binary(argv[2][idx++], pid);
+	send_binary('\n', pid);
 	return (0);
 }
